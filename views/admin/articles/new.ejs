@@ -1,0 +1,49 @@
+<%- include ('../../partials/header.ejs'); %>
+
+<body>
+    <%- include ('../../partials/navbar.ejs'); %>
+
+    <div class="container" id="container">
+        <div class="card">
+            <div class="card-title">
+                <h2>Novo Artigos</h2>
+            </div>
+            <div class="card-body">
+                <form action="/articles/save" method="POST" >
+                    <input class="form-control" type="text" name="title" placeholder="Defina o titulo do artigo"><br>
+                    <label>Categoria</label>
+                    <select name="category" class="form-control">
+                        <% categories.forEach(category => { %>
+                            <option value="<%= category.id %>"><%= category.title %></option>
+                        <% }) %>
+                    </select>
+                    <br>
+                    <textarea id='article' class="form-control" placeholder="Escreve aqui o seu artigo" name="body"></textarea>
+                    
+                 
+                    <br>
+                    <button class="btn btn-success" id="enviar">Salvar</button>
+                </form>
+            </div>           
+        </div>
+    </div>
+</body>
+
+<%- include ('../../partials/footer.ejs'); %>
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/tinymce.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/jquery.tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        selector: '#article',
+        height: 500,
+        menubar: true,
+        plugins: [
+            'advlist autolink image list print preview hr searchreplace wordcount fullscreen insertdatetime media save table paste emoticons'
+        ]
+       
+    });
+    
+</script>

@@ -1,0 +1,21 @@
+<%- include ('partials/header.ejs'); %>
+<%- include ('partials/homenavbar.ejs'); %>
+
+<body>
+   <br>
+    <div class="container">
+      </select>
+        <% articles.forEach(article =>{ %>
+            <div class="jumbotron">
+                <h1 class="display-4"><%= article.title%></h1>
+                <hr class="my-4">
+                <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+                <p class="lead">
+                  <a class="btn btn-primary btn-lg" href="/<%= article.slug%>" role="button">Learn more</a>
+                </p>
+              </div>
+        <% }); %>
+    </div>
+</body>
+
+<%- include ('partials/footer.ejs'); %>
