@@ -3,26 +3,27 @@ const router = require('express').Router();
 const Category = require('../categories/Category');
 const Article = require('./Article')
 const slugify = require('slugify');
+const adminAuth = require('../middlewares/adminAuth');
 
 //rota para exibir todos os artigos
-router.get('/articles', (req, res)=>{
+router.get('/admin/articles', adminAuth, (req, res)=>{
     Article.findAll({
         include: [{model: Category}]
     }).then(articles=>{
-        res.render('admin/articles', {articles: articles});
+        res.render('admin/articles/index', {articles: articles});
     })
 });
 
 
 //rota para exibir o formulário de criação de artigos
-router.get('/admin/articles/new', (req, res)=>{
+router.get('/admin/articles/new', adminAuth, (req, res)=>{
     Category.findAll().then(categories=>{
         res.render('admin/articles/new', {categories: categories});
     })
 });
 
 //rota para salvar o artigo no banco de dados
-router.post('/articles/save', (req, res)=>{
+router.post('/articles/save', adminAuth, (req, res)=>{
     const body = req.body.body
     const category = req.body.category
     const title = req.body.title
@@ -34,14 +35,14 @@ router.post('/articles/save', (req, res)=>{
             body: body,
             categoryId: category
         }).then(()=>{
-            res.redirect('/articles');
+            res.redirect('/admin/articles');
         })}else{
             res.redirect('/admin/articles/new');
         }
 })
 
 //rota para deletar um artigo
-router.post('/admin/article/delete', (req, res)=>{
+router.post('/admin/article/delete', adminAuth, (req, res)=>{
     const id = req.body.id
     if(id != undefined && !isNaN(id)){
         Article.destroy({
@@ -57,7 +58,7 @@ router.post('/admin/article/delete', (req, res)=>{
 })
 
 //rota para editar um artigo
-router.get('/articles/edit/:id', (req, res) =>{
+router.get('/articles/edit/:id', adminAuth, (req, res) =>{
     const id = req.params.id
     Article.findByPk(id).then(article=>{
         if(article != undefined){
@@ -73,7 +74,7 @@ router.get('/articles/edit/:id', (req, res) =>{
 })
 
 //rota para atualizar um artigo no banco de dados
-router.post('/articles/update', (req, res)=>{
+router.post('/articles/update', adminAuth, (req, res)=>{
     const id = req.body.id
     const title = req.body.title
     const body = req.body.body
@@ -96,7 +97,7 @@ router.post('/articles/update', (req, res)=>{
 
 
 
-router.get('/admin/articles', (req, res)=>{
+router.get('/admin/articles', adminAuth, (req, res)=>{
     Article.findAll({
         include: [{model: Category}],
         order: [['id', 'DESC']]
@@ -105,7 +106,7 @@ router.get('/admin/articles', (req, res)=>{
     })
 })
 
-router.post('/admin/articles/delete', (req, res)=>{
+router.post('/admin/articles/delete', adminAuth, (req, res)=>{
     const id = req.body.id
     if(id != undefined && !isNaN(id)){
         Article.destroy({
@@ -124,14 +125,16 @@ router.get('/articles/page/:num', (req, res) =>{
     if(isNaN(page) || page == 1){
         offset = 0
     }else{
-        offset = (parseInt(page)) * 2
+        offset = (parseInt(page)-1) * 4
     }
 
     Article.findAndCountAll({
         limit: 4,
         offset: offset,
+        order: [['id', 'DESC']]
     }).then(articles=>{
-        if(offset + 4 >= articles.count){
+        var next
+        if(offset + 4 > articles.count){
             next = false
         }else{
             next = true
@@ -141,8 +144,13 @@ router.get('/articles/page/:num', (req, res) =>{
             next: next,
             articles: articles
         }
-        res.json(result)
+
+        Category.findAll().then(categories=>{
+            res.render('admin/articles/page', {result: result, categories: categories});
+        })
+        console.log(result)
     })
+
 })
 
 module.exports = router;

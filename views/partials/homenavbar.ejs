@@ -3,16 +3,32 @@
         Guiapress
     </a>
 
-    <ul id='lista' class="navbar-nav mr-auto">
-        <li class="nav-item">
-            <a id="nav" class="nav-link" href="/">Home</a>
-        </li> 
-        <% categories.forEach(category=>{ %>
-            <li class="nav-item">
-                <a id="nav" class="nav-link" href="/category/<%= category.slug%>"><%= category.title%></a>
-            </li>   
-        <% }) %>
-
-      
-    </ul>
+    <div class="navbarra">
+       <div>
+            <ul id='lista' class="navbar-nav mr-auto">
+              
+                <% categories.forEach(category=>{ %>
+                    <li class="nav-item">
+                        <a id="nav" class="nav-link" href="/category/<%= category.slug%>"><%= category.title%></a>
+                    </li>   
+                <% }) %>
+            </ul>
+        </div>
+        <div>
+            <ul id="lista" class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a id="nav" class="nav-link" href="/admin/articles">Artigos</a>
+                </li>
+               <li class="nav-item">
+                    <a id="nav" class="nav-link" href="/admin/articles">Categorias</a>
+                </li>
+               <li class="nav-item">
+                    <a id="nav" class="nav-link" href="/admin/articles/new">Cadastro de Categorias</a>
+                </li>
+               <li class="nav-item">
+                    <a id="nav" class="nav-link" href="/admin/articles/new">Cadastro de Artigos</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </nav>

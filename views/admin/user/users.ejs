@@ -1,0 +1,36 @@
+<%- include ('../../partials/header.ejs'); %>
+<%- include ('../../partials/navbar.ejs'); %>
+
+<body>
+    <div class="container" id="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Usuários</h1>
+                <a href="/admin/users/create" class="btn btn-primary">Cadastrar Usuário</a>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach(user=>{ %>
+                        <tr>
+                            <td><%= user.id %></td>
+                            <td><%= user.email %></td>
+                            <td>
+                                <a href="/users/<%= user.id %>/edit" class="btn btn-primary">Editar</a>
+                                <a href="/users/<%= user.id %>/delete" class="btn btn-danger">Excluir</a>
+                            </td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+<%- include ('../../partials/footer.ejs'); %>

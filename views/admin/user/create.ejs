@@ -1,0 +1,46 @@
+<%- include ('../../partials/header.ejs'); %>
+<%- include ('../../partials/navbar.ejs'); %>
+
+<div class="main">
+    <div class="cadastro">
+        <fieldset>
+            <legend>Cadastro de Usuário</legend>
+        <form action="/users/create"  method="POST" class="formulario" onsubmit="verificaSenha(event, this)">
+            <div class="label">
+                <label for="" class="labelCadastro">Nome</label>
+                <input type="text" name="name" id="name" placeholder="Nome" class="inputCadastro" required>
+            </div>
+            <div class="label">
+                <label for="" class="labelCadastro">E-mail</label>
+                <input type="email" name="email" id="email" placeholder="E-mail" class="inputCadastro" required>
+            </div>
+            <div class="label">
+                <label for="" class="labelCadastro">Senha</label>
+                <input type="password" name="password" id="password" placeholder="Senha" class="inputCadastro" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
+            </div>
+            <div class="label">
+                <label for="" class="labelCadastro">Confirmar Senha</label>
+                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirmar Senha" class="inputCadastro" required>
+            </div>
+            <div class="button">
+                <button class="botao" type="submit">Cadastrar-se</button>
+            </div>
+        </form>
+        </fieldset>
+    </div>
+</div>
+
+<script>
+    const verificaSenha = (event, form) => {
+        event.preventDefault();
+        const senha = document.getElementById('password').value;
+        const confirmarSenha = document.getElementById('confirmPassword').value;
+        if (senha != confirmarSenha) {
+            alert('Senhas não conferem');
+        }else{
+            form.submit();
+        }
+    }
+</script>
+
+<%- include ('../../partials/footer.ejs'); %>
